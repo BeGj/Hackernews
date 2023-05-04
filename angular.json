@@ -21,6 +21,11 @@
         },
         "@schematics/angular:pipe": {
           "standalone": true
+        },
+        "@schematics/angular": {
+          "component": {
+            "changeDetection": "OnPush"
+          }
         }
       },
       "root": "",

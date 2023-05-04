@@ -1,0 +1,55 @@
+<section class="container mx-auto">
+  <ng-container *ngIf="this.story$ | async as story">
+    <h1 class="text-lg">{{ story.title }}</h1>
+    <p class="text-sm text-gray-600">
+      {{ story.time * 1000 | date : "medium" }} by
+      <a
+        class="hover:underline underline-offset-2 decoration-orange-600"
+        [routerLink]="['/user', story.by]"
+      >
+        {{ story.by }}</a
+      >
+    </p>
+    <section class="flex flex-row my-2 space-x-5">
+      <button
+        class="px-2 py-1 text-sm transition-colors bg-orange-600 rounded-md hover:bg-orange-700 text-orange-50"
+        (click)="this.linkIframeVisible.next(!this.linkIframeVisible.value)"
+      >
+        Open story with comments
+      </button>
+      <a
+        target="_blank"
+        class="px-2 py-1 text-sm transition-colors bg-orange-600 rounded-md hover:bg-orange-700 text-orange-50"
+        [href]="story.url"
+      >
+        Open story in new tab
+      </a>
+    </section>
+    <iframe
+      *ngIf="(linkIframeVisible | async) === true"
+      class="h-[80vh] mx-auto w-[100%]"
+      [src]="sanitizer.bypassSecurityTrustResourceUrl(story.url)"
+      frameborder="0"
+    ></iframe>
+  </ng-container>
+  <section
+    class="flex flex-col space-y-4"
+    *ngIf="comments$ | async as comments"
+  >
+    <div class="" *ngFor="let comment of comments">
+      <p class="text-sm text-gray-600">
+        <a
+          class="hover:underline underline-offset-2 decoration-orange-600"
+          [routerLink]="['/user', comment.by]"
+        >
+          {{ comment.by }}</a
+        >
+        at {{ comment.time * 1000 | date : "medium" }}
+      </p>
+      <p
+        class="ml-2 prose-sm prose"
+        [innerHTML]="sanitizer.bypassSecurityTrustHtml(comment.text)"
+      ></p>
+    </div>
+  </section>
+</section>

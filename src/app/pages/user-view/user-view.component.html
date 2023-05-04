@@ -1,0 +1,29 @@
+<section class="container mx-auto">
+  <div class="flex flex-col space-y-5" *ngIf="user$ | async as user">
+    <div>
+      <h1 class="text-lg">
+        {{ user.id }}
+      </h1>
+      <p class="text-sm text-gray-700">
+        Joined at {{ user.created * 1000 | date : "medium" }} and has since then
+        reached {{ user.karma }} karma by contributing to the community
+        {{ user.submitted.length }} times
+      </p>
+    </div>
+
+    <div>
+      <h1>About {{ user.id }}</h1>
+      <p
+        *ngIf="user.about"
+        class="ml-2 prose-sm prose"
+        [innerHTML]="sanitizer.bypassSecurityTrustHtml(user.about)"
+      ></p>
+    </div>
+    <div>
+      <h1>Contributions (work in progress)</h1>
+      <div *ngFor="let cont of user.submitted.slice(0, 50)">
+        <p>id: {{ cont }}</p>
+      </div>
+    </div>
+  </div>
+</section>

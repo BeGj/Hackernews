@@ -1,0 +1,42 @@
+<p class="text-xl">
+  Top stories
+  <span *ngIf="this.storiesCount$ | async as count" class="text-gray-600"
+    >({{ count === 0 ? "loading..." : count }})</span
+  >
+</p>
+<p class="text-gray-700" *ngIf="(this.storiesLoading | async) === true">
+  Loading...
+</p>
+<p class="text-gray-700" *ngIf="(this.storiesContentLoading | async) === true">
+  Loading content...
+</p>
+
+<section class="flex flex-col" *ngIf="this.topStories$ | async as stories">
+  <div class="mx-2 my-2" *ngFor="let story of stories">
+    <a
+      class="text-lg font-semibold transition-colors hover:text-orange-600"
+      [href]="story.url"
+    >
+      {{ story.title }}
+      <span class="text-xs text-gray-500">{{ story.url | urlPreview }}</span>
+    </a>
+    <div class="text-sm text-gray-600">
+      <p class="">
+        {{ story.score }} point posted at
+        {{ story.time * 1000 | date : "medium" }} by
+        <a
+          class="hover:underline underline-offset-2 decoration-orange-600"
+          [routerLink]="['/user', story.by]"
+          >{{ story.by }}</a
+        >
+      </p>
+      <a
+        class=""
+        [routerLink]="['/stories', story.id]"
+        class="hover:underline underline-offset-2 decoration-orange-600"
+      >
+        {{ story.descendants }} comments
+      </a>
+    </div>
+  </div>
+</section>
