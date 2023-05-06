@@ -1,24 +1,36 @@
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <p class="text-xl">
-  Top stories
+  {{ pageTitle$ | async }}
   <span *ngIf="this.storiesCount$ | async as count" class="text-gray-600"
     >({{ count === 0 ? "loading..." : count }})</span
   >
 </p>
 <p class="text-gray-700" *ngIf="(this.storiesLoading | async) === true">
-  Loading...
+  Loading stories...
 </p>
 <p class="text-gray-700" *ngIf="(this.storiesContentLoading | async) === true">
-  Loading content...
+  Loading stories info...
 </p>
 
-<section class="flex flex-col" *ngIf="this.topStories$ | async as stories">
+<section class="flex flex-col" *ngIf="this.stories$ | async as stories">
   <div class="mx-2 my-2" *ngFor="let story of stories">
+    <!-- Link to external url if exists -->
     <a
+      *ngIf="story.url"
       class="text-lg font-semibold transition-colors hover:text-orange-600"
       [href]="story.url"
     >
       {{ story.title }}
       <span class="text-xs text-gray-500">{{ story.url | urlPreview }}</span>
+    </a>
+    <!-- Link to comments if no external url -->
+    <a
+      *ngIf="!story.url"
+      class="text-lg font-semibold transition-colors hover:text-orange-600"
+      [routerLink]="['/stories', story.id]"
+    >
+      {{ story.title }}
     </a>
     <div class="text-sm text-gray-600">
       <p class="">
@@ -30,13 +42,28 @@
           >{{ story.by }}</a
         >
       </p>
-      <a
-        class=""
-        [routerLink]="['/stories', story.id]"
-        class="hover:underline underline-offset-2 decoration-orange-600"
-      >
-        {{ story.descendants }} comments
-      </a>
+      <div>
+        <a
+          [routerLink]="['/stories', story.id]"
+          class="hover:underline underline-offset-2 decoration-orange-600"
+        >
+          {{ story.descendants }} comments.
+        </a>
+        <span
+          *ngIf="story.saved === true"
+          (click)="this.savedStories.unSaveStory(story)"
+          class="cursor-pointer hover:underline underline-offset-2 decoration-orange-600"
+        >
+          Unsave story.
+        </span>
+        <span
+          *ngIf="story.saved === false"
+          (click)="this.savedStories.saveStory(story)"
+          class="cursor-pointer hover:underline underline-offset-2 decoration-orange-600"
+        >
+          Save story.
+        </span>
+      </div>
     </div>
   </div>
 </section>

@@ -3,12 +3,15 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --open",
     "build": "ng build",
-    "build:gh-pages": "ng build --output-path docs --base-href /Hackernews/",
+    "deploy": "ng deploy && cmd.exe /C start https://begj.github.io/Hackernews/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "open": "cmd.exe /C start http://localhost:4200",
+    "open-gh": "cmd.exe /C start https://begj.github.io/Hackernews/",
+    "open-repo": "cmd.exe /C start https://github.com/BeGj/Hackernews"
   },
   "private": true,
   "dependencies": {

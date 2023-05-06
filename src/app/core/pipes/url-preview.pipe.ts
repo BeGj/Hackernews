@@ -7,7 +7,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class UrlPreviewPipe implements PipeTransform {
   transform(url: string, ...args: unknown[]): string {
-    const domain = new URL(url);
-    return domain.hostname;
+    try {
+      const domain = new URL(url);
+      return domain.hostname;
+    } catch (error) {
+      return '';
+    }
   }
 }

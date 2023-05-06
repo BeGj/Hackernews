@@ -7,7 +7,7 @@ export interface HnStory {
   time: number;
   title: string;
   type: 'story';
-  url: string;
+  url?: string;
 }
 
 export interface HnComment {

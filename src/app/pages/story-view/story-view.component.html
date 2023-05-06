@@ -26,7 +26,7 @@
       </a>
     </section>
     <iframe
-      *ngIf="(linkIframeVisible | async) === true"
+      *ngIf="story.url && (linkIframeVisible | async) === true"
       class="h-[80vh] mx-auto w-[100%]"
       [src]="sanitizer.bypassSecurityTrustResourceUrl(story.url)"
       frameborder="0"

@@ -18,6 +18,20 @@ export const routes: Routes = [
         (mod) => mod.TopStoriesComponent
       ),
     title: 'Top stories',
+    data: {
+      storiesPageType: 'top-stories',
+    },
+  },
+  {
+    path: 'stories/saved',
+    loadComponent: () =>
+      import('./pages/top-stories/top-stories.component').then(
+        (mod) => mod.TopStoriesComponent
+      ),
+    title: 'Saved stories',
+    data: {
+      storiesPageType: 'saved-stories',
+    },
   },
   {
     path: 'stories/:storyId',
