@@ -9,6 +9,10 @@ Demo: <https://begj.github.io/Hackernews/>
 
 ## Developement
 
+## Changelog
+
+[changelog.md](./changelog.md)
+
 ### Deploy to github pages
 
 - `npm run deploy`
