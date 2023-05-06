@@ -4,8 +4,8 @@
 
 ### Features
 
-- Subcomments now visible :D
-- Hide/Show comments and subcomments (Toggle by clicking on left colored bar)
+- Sub comments now visible :D
+- Hide/Show comments and sub comments (Toggle by clicking on left colored bar)
 - Save stories. (Persisted in localstorage)
 - App header now contains relevant links
   - saved stories
@@ -26,8 +26,8 @@
 
 ### Known caveats
 
-- Saved stories is not transfered between different browsers and devices.
+- Saved stories is not transferred between different browsers and devices.
 - When expanding previous closed comments, the comments are fetched from api again.
 - App header is not suitable for mobile devices. But it is "suitable"
-- Comments with deep subcomment hierarchy will break the screen width css.
+- Comments with deep sub comment hierarchy will break the screen width css.
 - Not yet implemented the listing of a users submitted stories on their user page.

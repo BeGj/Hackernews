@@ -14,7 +14,7 @@ export interface HnComment {
   by: string;
   id: number;
   kids?: number[];
-  prarent: number;
+  parent: number;
   text: string;
   time: number;
   type: 'comment';

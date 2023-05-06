@@ -7,7 +7,7 @@
 
 Demo: <https://begj.github.io/Hackernews/>
 
-## Developement
+## Development
 
 ## Changelog
 

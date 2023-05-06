@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   pure: true,
 })
 export class UrlPreviewPipe implements PipeTransform {
-  transform(url: string, ...args: unknown[]): string {
+  transform(url: string): string {
     try {
       const domain = new URL(url);
       return domain.hostname;
