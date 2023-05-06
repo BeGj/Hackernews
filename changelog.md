@@ -1,11 +1,10 @@
 # Changelog
 
-## 6. Juni 2023
+## 6 June 23
 
 ### Features
 
 - Subcomments now visible :D
--
 - Hide/Show comments and subcomments (Toggle by clicking on left colored bar)
 - Save stories. (Persisted in localstorage)
 - App header now contains relevant links
