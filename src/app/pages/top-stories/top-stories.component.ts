@@ -8,8 +8,8 @@ import {
   concatMap,
   forkJoin,
   map,
+  merge,
   of,
-  shareReplay,
   tap,
   withLatestFrom,
 } from 'rxjs';
@@ -75,8 +75,6 @@ export class TopStoriesComponent {
     })
   );
 
-  storiesCount$ = this.storyIds$.pipe(map((ids) => ids.length));
-
   // Update saved variable on update from either observables
   stories$ = combineLatest([
     // on stories update
@@ -102,6 +100,11 @@ export class TopStoriesComponent {
     tap(() => {
       this.storiesContentLoading$.next(false);
     })
+  );
+
+  storiesCount$ = merge(
+    this.storyIds$.pipe(map((ids) => ids.length)),
+    this.stories$.pipe(map((stories) => stories.length))
   );
 
   constructor(

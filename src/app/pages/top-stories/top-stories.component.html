@@ -28,7 +28,9 @@
     *ngFor="let story of stories; let i = index"
   >
     <div class="flex flex-row justify-center w-4 place-content-center">
-      <p class="my-auto font-mono text-xl font-bold text-gray-600">{{ i }}.</p>
+      <p class="my-auto font-mono text-xl font-bold text-gray-600">
+        {{ i + 1 }}.
+      </p>
     </div>
     <div class="flex-1">
       <!-- Link to external url if exists -->

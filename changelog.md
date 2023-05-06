@@ -11,6 +11,9 @@
   - saved stories
   - top stories
   - github repo link
+- Index next to stories on the stories page.
+- Visited links will now be grayed out.
+  - Making it easier to see new content
 
 ### Bug fixes
 
@@ -31,3 +34,4 @@
 - App header is not suitable for mobile devices. But it is "suitable"
 - Comments with deep sub comment hierarchy will break the screen width css.
 - Not yet implemented the listing of a users submitted stories on their user page.
+- BUG: Saved stories stops when trying to remove last saved story, or when opening the pages with 0 stories saved.
