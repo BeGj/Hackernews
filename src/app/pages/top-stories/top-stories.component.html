@@ -1,39 +1,57 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
-<p class="text-xl">
-  {{ pageTitle$ | async }}
-  <span *ngIf="this.storiesCount$ | async as count" class="text-gray-600"
-    >({{ count === 0 ? "loading..." : count }})</span
+<!-- Page title and stories count -->
+<section class="mb-2">
+  <p class="text-xl">
+    {{ pageTitle$ | async }}
+    <span *ngIf="this.storiesCount$ | async as count" class="text-gray-600"
+      >({{ count === 0 ? "loading..." : count }})</span
+    >
+  </p>
+  <p class="text-gray-700" *ngIf="(this.storiesLoading$ | async) === true">
+    Loading stories...
+  </p>
+  <p
+    class="text-gray-700"
+    *ngIf="(this.storiesContentLoading$ | async) === true"
   >
-</p>
-<p class="text-gray-700" *ngIf="(this.storiesLoading | async) === true">
-  Loading stories...
-</p>
-<p class="text-gray-700" *ngIf="(this.storiesContentLoading | async) === true">
-  Loading stories info...
-</p>
+    Loading stories info...
+  </p>
+</section>
 
-<section class="flex flex-col" *ngIf="this.stories$ | async as stories">
-  <div class="mx-2 my-2" *ngFor="let story of stories">
-    <!-- Link to external url if exists -->
-    <a
-      *ngIf="story.url"
-      class="text-lg font-semibold transition-colors hover:text-orange-600"
-      [href]="story.url"
-    >
-      {{ story.title }}
-      <span class="text-xs text-gray-500">{{ story.url | urlPreview }}</span>
-    </a>
-    <!-- Link to comments if no external url -->
-    <a
-      *ngIf="!story.url"
-      class="text-lg font-semibold transition-colors hover:text-orange-600"
-      [routerLink]="['/stories', story.id]"
-    >
-      {{ story.title }}
-    </a>
-    <div class="text-sm text-gray-600">
-      <p class="">
+<section
+  class="flex flex-col space-y-2"
+  *ngIf="this.stories$ | async as stories"
+>
+  <div
+    class="flex flex-row px-2 space-x-2"
+    *ngFor="let story of stories; let i = index"
+  >
+    <div class="flex flex-row justify-center w-4 place-content-center">
+      <p class="my-auto font-mono text-xl font-bold text-gray-600">{{ i }}.</p>
+    </div>
+    <div class="flex-1">
+      <!-- Link to external url if exists -->
+      <a
+        *ngIf="story.url"
+        class="text-lg font-semibold transition-colors hover:text-orange-600 visited:text-gray-400 visited:hover:text-gray-600"
+        [href]="story.url"
+      >
+        {{ story.title }}
+        <span class="text-xs text-gray-400"
+          >({{ story.url | urlPreview }})</span
+        >
+      </a>
+      <!-- Link to comments if no external url -->
+      <a
+        *ngIf="!story.url"
+        class="text-lg font-semibold transition-colors hover:text-orange-600 visited:text-gray-400 visited:hover:text-gray-600"
+        [routerLink]="['/stories', story.id]"
+      >
+        {{ story.title }}
+      </a>
+      <!-- points, date and user link  -->
+      <p class="text-sm text-gray-600">
         {{ story.score }} point posted at
         {{ story.time * 1000 | date : "medium" }} by
         <a
@@ -42,7 +60,8 @@
           >{{ story.by }}</a
         >
       </p>
-      <div>
+      <!-- comment count and link, and save/unsave story -->
+      <p class="text-sm text-gray-600">
         <a
           [routerLink]="['/stories', story.id]"
           class="hover:underline underline-offset-2 decoration-orange-600"
@@ -63,7 +82,7 @@
         >
           Save story.
         </span>
-      </div>
+      </p>
     </div>
   </div>
 </section>

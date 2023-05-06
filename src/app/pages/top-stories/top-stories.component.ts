@@ -29,10 +29,10 @@ export type StoriesPageType = 'top-stories' | 'saved-stories';
 })
 export class TopStoriesComponent {
   @Input() set storiesPageType(storiesPageType: StoriesPageType) {
-    this.triggerStoriesLoad.next(storiesPageType);
+    this.triggerStoriesLoad$.next(storiesPageType);
   }
-  private triggerStoriesLoad = new ReplaySubject<StoriesPageType>();
-  protected pageTitle$ = this.triggerStoriesLoad.pipe(
+  private triggerStoriesLoad$ = new ReplaySubject<StoriesPageType>();
+  protected pageTitle$ = this.triggerStoriesLoad$.pipe(
     map((page) => {
       switch (page) {
         case 'saved-stories':
@@ -46,45 +46,47 @@ export class TopStoriesComponent {
   private firstStoryIndex$ = new BehaviorSubject(0);
   private lastStoryIndex$ = new BehaviorSubject(50);
 
-  protected storiesCount$ = new BehaviorSubject(0);
-  protected storiesLoading = new BehaviorSubject(true);
-  protected storiesContentLoading = new BehaviorSubject(false);
+  protected storiesLoading$ = new BehaviorSubject(true);
+  protected storiesContentLoading$ = new BehaviorSubject(false);
+
+  storyIds$ = this.triggerStoriesLoad$.pipe(
+    tap(() => {
+      this.storiesLoading$.next(true);
+      this.storiesContentLoading$.next(true);
+    }),
+    concatMap((storiesPageType) => {
+      switch (storiesPageType) {
+        case 'saved-stories':
+          return this.savedStories.getSavedStories$();
+        case 'top-stories':
+          return this.hnService.fetchTopStories();
+        default:
+          console.log('Error. No StoriesPageType');
+          return of([]);
+      }
+    }),
+    withLatestFrom(this.firstStoryIndex$, this.lastStoryIndex$),
+    // Slice storyIds array to not fetch over 50 stories.
+    map(([storyIds, first, last]) => {
+      return storyIds.slice(first, last);
+    }),
+    tap(() => {
+      this.storiesLoading$.next(false);
+    })
+  );
+
+  storiesCount$ = this.storyIds$.pipe(map((ids) => ids.length));
 
   // Update saved variable on update from either observables
   stories$ = combineLatest([
     // on stories update
-    this.triggerStoriesLoad.pipe(
-      tap(() => {
-        this.storiesContentLoading.next(true);
-      }),
-      concatMap((storiesPageType) => {
-        switch (storiesPageType) {
-          case 'saved-stories':
-            return this.savedStories.getSavedStories$();
-          case 'top-stories':
-            return this.hnService.fetchTopStories();
-          default:
-            console.log('Error. No StoriesPageType');
-            return of([]);
-        }
-      }),
-      tap((stories) => {
-        this.storiesLoading.next(false);
-        this.storiesCount$.next(stories.length);
-      }),
-      withLatestFrom(this.firstStoryIndex$, this.lastStoryIndex$),
-      concatMap(([stories, first, last]) =>
-        forkJoin(
-          stories.slice(first, last).map((id) => this.hnService.fetchStory(id))
-        )
+    this.storyIds$.pipe(
+      concatMap((stories) =>
+        forkJoin(stories.map((id) => this.hnService.fetchStory(id)))
       ),
       map((stories) =>
         stories.filter((story) => ['story'].includes(story.type))
-      ), // to remove jobs from list
-      tap(() => {
-        this.storiesLoading.next(false);
-        this.storiesContentLoading.next(false);
-      })
+      ) // to remove jobs from list
     ),
     // on saved stories update
     this.savedStories.getSavedStories$(),
@@ -96,6 +98,9 @@ export class TopStoriesComponent {
           saved: savedStoryIds.includes(story.id),
         } as HnStoryListView;
       });
+    }),
+    tap(() => {
+      this.storiesContentLoading$.next(false);
     })
   );
 
