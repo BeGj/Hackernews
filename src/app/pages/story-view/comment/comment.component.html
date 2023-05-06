@@ -1,0 +1,50 @@
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<ng-container *ngIf="this.comment$ | async as comment">
+  <section class="flex flex-row space-x-1">
+    <!-- Hierarchy toggle visible comment div -->
+    <div
+      (click)="
+        this.toggleCommentVisibility.next(!this.toggleCommentVisibility.value)
+      "
+      class="w-2 bg-orange-300 cursor-pointer hover:bg-orange-400"
+    ></div>
+    <!-- Comment div -->
+    <div class="flex-1">
+      <!-- Comment header -->
+      <p class="text-sm text-gray-400">
+        <a
+          class="hover:underline underline-offset-2 decoration-orange-600 hover:text-gray-600"
+          [routerLink]="['/user', comment.by]"
+        >
+          {{ comment.by }}</a
+        >
+        at {{ comment.time * 1000 | date : "medium" }}
+      </p>
+      <!-- Comment contents -->
+      <p
+        *ngIf="(this.toggleCommentVisibility | async) === true"
+        class="w-auto ml-2 prose-sm prose prose-gray max-w-none"
+        [innerHTML]="sanitizer.bypassSecurityTrustHtml(comment.text)"
+      ></p>
+    </div>
+  </section>
+  <ng-container *ngIf="(this.toggleCommentVisibility | async) === true">
+    <!-- Sub comments section -->
+    <section
+      class="flex flex-col space-y-4"
+      *ngIf="this.subComments$ | async as subComments"
+    >
+      <app-comment
+        class="block mt-2"
+        [style.margin-left.rem]="(this.hierarchyLevel + 1) * 2"
+        *ngFor="let subComment of subComments"
+        [comment]="subComment"
+        [hierarchyLevel]="this.hierarchyLevel + 1"
+      ></app-comment>
+    </section>
+  </ng-container>
+  <section *ngIf="(this.subCommentLoading$ | async) === true">
+    <p class="text-gray-600">Loading subcomments...</p>
+  </section>
+</ng-container>

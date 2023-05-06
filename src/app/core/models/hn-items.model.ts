@@ -13,7 +13,7 @@ export interface HnStory {
 export interface HnComment {
   by: string;
   id: number;
-  kids: number[];
+  kids?: number[];
   prarent: number;
   text: string;
   time: number;

@@ -8,19 +8,21 @@ import {
   ReplaySubject,
   concatMap,
   forkJoin,
+  map,
   shareReplay,
   tap,
 } from 'rxjs';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { CommentComponent } from './comment/comment.component';
 
 @Component({
   selector: 'app-story-view',
   standalone: true,
-  imports: [CommonModule, RouterModule],
   templateUrl: './story-view.component.html',
   styleUrls: ['./story-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule, RouterModule, CommentComponent],
 })
 export class StoryViewComponent {
   @Input({ required: true }) set storyId(id: number) {
@@ -34,6 +36,7 @@ export class StoryViewComponent {
     }),
     shareReplay()
   );
+  commentsLoading$ = new BehaviorSubject(false);
   comments$ = this.story$.pipe(
     concatMap((story) =>
       forkJoin(story.kids.map((commentId) => this.hn.fetchComment(commentId)))
