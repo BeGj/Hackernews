@@ -6,6 +6,7 @@ import {
   ReplaySubject,
   concatMap,
   forkJoin,
+  map,
   tap,
   withLatestFrom,
 } from 'rxjs';
@@ -45,6 +46,9 @@ export class TopStoriesComponent {
     withLatestFrom(this.firstStoryIndex$, this.lastStoryIndex$),
     concatMap(([stories, first, last]) =>
       forkJoin(stories.slice(first, last).map((id) => this.hn.fetchStory(id)))
+    ),
+    map((stories) =>
+      stories.filter((story) => ['story', 'ask'].includes(story.type))
     ),
     tap(() => {
       this.storiesLoading.next(false);
