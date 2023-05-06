@@ -37,7 +37,7 @@
     >
       <app-comment
         class="block mt-2"
-        [style.margin-left.rem]="(this.hierarchyLevel + 1) * 2"
+        [style.margin-left.rem]="(this.hierarchyLevel + 1) * 1"
         *ngFor="let subComment of subComments"
         [comment]="subComment"
         [hierarchyLevel]="this.hierarchyLevel + 1"
