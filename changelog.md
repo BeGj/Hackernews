@@ -2,6 +2,13 @@
 
 ## 7. June 23
 
+### Bugfixes
+
+- When 0 posts, will show 0 instead of hiding component
+  - Fixed by using ngrxPush pip instead of async pipe.
+
+- When 0 posts, will show empty instead of loading
+
 ### Contributions
 
 - Contributed to Angular router documentation
