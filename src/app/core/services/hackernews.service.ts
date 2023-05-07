@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import {
   HnStory,
   HnComment,
@@ -19,8 +19,21 @@ export class HackernewsService {
   constructor(private http: HttpClient) {}
 
   //#region Story fetchers
-  fetchTopPosts(): Observable<number[]> {
-    return this.http.get<number[]>(`${this.baseUrl}topstories.json`);
+  fetchTopPosts(first?: number, last?: number): Observable<number[]> {
+    return this.http.get<number[]>(`${this.baseUrl}topstories.json`).pipe(
+      map((postIds) => {
+        if (first !== undefined && last !== undefined) {
+          return postIds.slice(first, last);
+        } else if (first !== undefined && last === undefined) {
+          last = first + 50 > 499 ? 499 : first + 50;
+          return postIds.slice(first, last);
+        } else if (first === undefined && last !== undefined) {
+          first = last - 50 < 0 ? 0 : last - 50;
+          return postIds.slice(first, last);
+        }
+        return postIds;
+      })
+    );
   }
 
   fetchNewStories(): Observable<number[]> {

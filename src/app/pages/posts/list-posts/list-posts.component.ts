@@ -6,13 +6,11 @@ import {
   ReplaySubject,
   combineLatest,
   concatMap,
-  forkJoin,
   map,
   merge,
   of,
   shareReplay,
   tap,
-  withLatestFrom,
 } from 'rxjs';
 import { RouterModule } from '@angular/router';
 import { UrlPreviewPipe } from 'src/app/core/pipes/url-preview.pipe';
@@ -55,34 +53,33 @@ export class ListPostsComponent {
     shareReplay()
   );
 
-  private firstPostIndex$ = new BehaviorSubject(0);
-  private lastPostIndex$ = new BehaviorSubject(50);
+  private firstPostIndex$ = new BehaviorSubject<number | undefined>(0);
+  private lastPostIndex$ = new BehaviorSubject<number | undefined>(50);
 
   protected postsLoading$ = new BehaviorSubject(true);
   protected postsContentLoading$ = new BehaviorSubject(false);
 
-  private postIds$ = this.triggerPostsLoad$.pipe(
-    tap((type) => {
+  private postIds$ = combineLatest([
+    this.firstPostIndex$,
+    this.lastPostIndex$,
+    this.triggerPostsLoad$,
+  ]).pipe(
+    tap(() => {
       this.postsLoading$.next(true);
       this.postsContentLoading$.next(true);
     }),
-    concatMap((postsPageType) => {
+    concatMap(([first, last, postsPageType]) => {
       switch (postsPageType) {
         case 'saved-posts':
-          return this.savedPostsService.getSavedPosts$();
+          return this.savedPostsService.getSavedPosts$(first, last);
         case 'top-posts':
-          return this.hnService.fetchTopPosts();
+          return this.hnService.fetchTopPosts(first, last);
         default:
           console.log('Error. No PostsPageType');
           return of([]);
       }
     }),
-    withLatestFrom(this.firstPostIndex$, this.lastPostIndex$),
-    // Slice postIds array to not fetch over 50 posts.
-    map(([postIds, first, last]) => {
-      return postIds.slice(first, last);
-    }),
-    tap((postIds) => {
+    tap(() => {
       this.postsLoading$.next(false);
     }),
     shareReplay()
@@ -94,9 +91,9 @@ export class ListPostsComponent {
     this.postIds$.pipe(
       concatMap((postIds) => {
         if (postIds.length > 0) {
-          return forkJoin(
+          return combineLatest(
             postIds.map((id) => {
-              return this.hnService.fetchPost(id);
+              return this.firebase.fetchPost(id);
             })
           );
         } else {
@@ -118,7 +115,7 @@ export class ListPostsComponent {
         } as HnPostWithSaved;
       });
     }),
-    tap((posts) => {
+    tap(() => {
       this.postsContentLoading$.next(false);
     }),
     shareReplay()

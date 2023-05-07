@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -21,8 +21,21 @@ export class SavedPostsService {
     const posts = this.savedPostsCache$.value;
     this.savePostsToLocalStorageAndCache(posts.filter((id) => id !== postId));
   }
-  public getSavedPosts$(): Observable<number[]> {
-    return this.savedPostsCache$.pipe();
+  public getSavedPosts$(first?: number, last?: number): Observable<number[]> {
+    return this.savedPostsCache$.pipe(
+      map((postIds) => {
+        if (first !== undefined && last !== undefined) {
+          return postIds.slice(first, last);
+        } else if (first !== undefined && last === undefined) {
+          last = first + 50 > 499 ? 499 : first + 50;
+          return postIds.slice(first, last);
+        } else if (first === undefined && last !== undefined) {
+          first = last - 50 < 0 ? 0 : last - 50;
+          return postIds.slice(first, last);
+        }
+        return postIds;
+      })
+    );
   }
 
   private loadSavedPostsFromLocalStorage(): number[] {
