@@ -18,8 +18,6 @@ export class HnFirebaseService {
     const itemRef = ref(this.database, 'v0/item/' + id);
     return new Observable((subscriber) => {
       onValue(itemRef, (snapshot) => {
-        console.log(snapshot.val());
-
         subscriber.next(snapshot.val());
       });
     });
