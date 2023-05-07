@@ -1,6 +1,6 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
-<ng-container *ngIf="this.comment$ | async as comment">
+<ng-container *ngrxLet="this.comment$ as comment">
   <section class="flex flex-row space-x-1">
     <!-- Hierarchy toggle visible comment div -->
     <div
@@ -23,17 +23,17 @@
       </p>
       <!-- Comment contents -->
       <p
-        *ngIf="(this.toggleCommentVisibility | async) === true"
+        *ngIf="(this.toggleCommentVisibility | ngrxPush) === true"
         class="w-auto ml-2 prose-sm prose prose-gray max-w-none"
         [innerHTML]="sanitizer.bypassSecurityTrustHtml(comment.text)"
       ></p>
     </div>
   </section>
-  <ng-container *ngIf="(this.toggleCommentVisibility | async) === true">
+  <ng-container *ngIf="(this.toggleCommentVisibility | ngrxPush) === true">
     <!-- Sub comments section -->
     <section
       class="flex flex-col space-y-4"
-      *ngIf="this.subComments$ | async as subComments"
+      *ngrxLet="this.subComments$ as subComments"
     >
       <app-comment
         class="block mt-2"
@@ -44,7 +44,7 @@
       ></app-comment>
     </section>
   </ng-container>
-  <section *ngIf="(this.subCommentLoading$ | async) === true">
+  <section *ngIf="(this.subCommentLoading$ | ngrxPush) === true">
     <p class="text-gray-600">Loading sub comments...</p>
   </section>
 </ng-container>

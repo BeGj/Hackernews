@@ -1,5 +1,5 @@
 <section class="">
-  <ng-container *ngIf="this.post$ | async as post">
+  <ng-container *ngrxLet="this.post$ as post">
     <h1 class="text-lg">{{ post.title }}</h1>
     <p class="text-sm text-gray-600">
       {{ post.time * 1000 | date : "medium" }} by
@@ -26,16 +26,13 @@
       </a>
     </section>
     <iframe
-      *ngIf="post.url && (linkIframeVisible | async) === true"
+      *ngIf="post.url && (linkIframeVisible | ngrxPush) === true"
       class="h-[80vh] mx-auto w-[100%]"
       [src]="sanitizer.bypassSecurityTrustResourceUrl(post.url)"
       frameborder="0"
     ></iframe>
   </ng-container>
-  <section
-    class="flex flex-col space-y-4"
-    *ngIf="comments$ | async as comments"
-  >
+  <section class="flex flex-col space-y-4" *ngrxLet="comments$ as comments">
     <app-comment
       class="block"
       [style.margin-left.rem]="1"

@@ -13,10 +13,11 @@ import {
 } from 'rxjs';
 import { HackernewsService } from 'src/app/core/services/hackernews.service';
 
+import { LetModule, PushModule } from '@ngrx/component';
 @Component({
   selector: 'app-comment',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, LetModule, PushModule],
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

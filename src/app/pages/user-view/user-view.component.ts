@@ -4,11 +4,11 @@ import { HackernewsService } from 'src/app/core/services/hackernews.service';
 import { Observable, ReplaySubject, concatMap, shareReplay, tap } from 'rxjs';
 import { HnUser } from 'src/app/core/models/hn-items.model';
 import { DomSanitizer, Title } from '@angular/platform-browser';
-
+import { LetModule, PushModule } from '@ngrx/component';
 @Component({
   selector: 'app-user-view',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LetModule, PushModule],
   templateUrl: './user-view.component.html',
   styleUrls: ['./user-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

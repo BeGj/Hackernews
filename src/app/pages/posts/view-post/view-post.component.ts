@@ -16,13 +16,20 @@ import { DomSanitizer, Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { CommentComponent } from './comment/comment.component';
 
+import { LetModule, PushModule } from '@ngrx/component';
 @Component({
   selector: 'app-view-post',
   standalone: true,
   templateUrl: './view-post.component.html',
   styleUrls: ['./view-post.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule, CommentComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    CommentComponent,
+    LetModule,
+    PushModule,
+  ],
 })
 export class ViewPostComponent {
   @Input({ required: true }) set postId(id: number) {

@@ -21,6 +21,7 @@ import { HnPostWithSaved } from 'src/app/core/models/hn-items.model';
 import { HnFirebaseService } from 'src/app/core/services/hn-firebase.service';
 import { ListViewPostComponent } from './list-view-post/list-view-post.component';
 
+import { LetModule, PushModule } from '@ngrx/component';
 export type PostsPageType = 'top-posts' | 'saved-posts';
 @Component({
   selector: 'app-list-posts',
@@ -28,7 +29,14 @@ export type PostsPageType = 'top-posts' | 'saved-posts';
   templateUrl: './list-posts.component.html',
   styleUrls: ['./list-posts.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule, UrlPreviewPipe, ListViewPostComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    UrlPreviewPipe,
+    ListViewPostComponent,
+    LetModule,
+    PushModule,
+  ],
 })
 export class ListPostsComponent {
   @Input() set postsPageType(postsPageType: PostsPageType) {
@@ -96,7 +104,7 @@ export class ListPostsComponent {
         }
       }),
       map((posts) => {
-        return posts.filter((post) => ['story'].includes(post.type));
+        return posts.filter((post) => post.type === 'story'); // ['story'].includes(post.type)
       }) // to remove jobs from list
     ),
     // on saved posts update
@@ -132,5 +140,6 @@ export class ListPostsComponent {
   constructor(
     private hnService: HackernewsService,
     protected savedPostsService: SavedPostsService,
+    private firebase: HnFirebaseService
   ) {}
 }

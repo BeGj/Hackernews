@@ -1,20 +1,23 @@
 <!-- Page title and posts count -->
 <section class="mb-2">
   <p class="text-xl">
-    {{ pageTitle$ | async }}
-    <span *ngIf="this.postsCount$ | async as count" class="text-gray-600"
-      >({{ count === 0 ? "loading..." : count }})</span
+    {{ pageTitle$ | ngrxPush }}
+    <span *ngrxLet="this.postsCount$ as count" class="text-gray-600"
+      >({{ count }})</span
     >
   </p>
-  <p class="text-gray-700" *ngIf="(this.postsLoading$ | async) === true">
+  <p class="text-gray-700" *ngIf="(this.postsLoading$ | ngrxPush) === true">
     Loading posts...
   </p>
-  <p class="text-gray-700" *ngIf="(this.postsContentLoading$ | async) === true">
+  <p
+    class="text-gray-700"
+    *ngIf="(this.postsContentLoading$ | ngrxPush) === true"
+  >
     Loading posts info...
   </p>
 </section>
 
-<section class="flex flex-col space-y-2" *ngIf="this.posts$ | async as posts">
+<section class="flex flex-col space-y-2" *ngrxLet="this.posts$ as posts">
   <app-list-view-post
     *ngFor="let post of posts; let index = index"
     [post]="post"
