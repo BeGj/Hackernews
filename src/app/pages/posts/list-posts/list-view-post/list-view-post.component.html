@@ -2,14 +2,17 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <div class="flex flex-row px-2 space-x-2">
   <div class="flex flex-row justify-center w-4 place-content-center">
-    <p class="my-auto font-mono text-xl font-bold text-gray-600" *ngIf="index">
+    <p
+      class="my-auto font-mono text-xl font-bold text-gray-600"
+      *ngIf="index !== undefined"
+    >
       {{ index }}.
     </p>
   </div>
   <div class="flex-1">
     <!-- Link to external url if exists -->
     <a
-      *ngIf="post.url"
+      *ngIf="post.url !== undefined"
       class="text-lg font-semibold transition-colors hover:text-orange-600 visited:text-gray-400 visited:hover:text-gray-600"
       [href]="post.url"
     >
@@ -18,7 +21,7 @@
     </a>
     <!-- Link to comments if no external url -->
     <a
-      *ngIf="!post.url"
+      *ngIf="post.url === undefined"
       class="text-lg font-semibold transition-colors hover:text-orange-600 visited:text-gray-400 visited:hover:text-gray-600"
       [routerLink]="['/posts', post.id]"
     >
@@ -37,7 +40,7 @@
     <!-- comment count and link, and save/unsave post -->
     <p class="text-sm text-gray-600" *ngIf="post.type === 'story'">
       <a
-        *ngIf="post.descendants"
+        *ngIf="post.descendants !== undefined"
         [routerLink]="['/posts', post.id]"
         class="hover:underline underline-offset-2 decoration-orange-600"
       >
