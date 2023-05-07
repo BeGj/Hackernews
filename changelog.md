@@ -24,8 +24,12 @@
 - Optimized application through use of Chromes Lighthouse
 - Added PreloadAll strategy, preloads all standalone components in background before visiting them.
 - Put logo in assets instead of loading from the original website
+
+### Features
+
+- Scroll to bottom to find a button to load more posts.. :)
 - When posts are updated in any way (title, score, new/deleted comments) the stories list will automatically get the updated via websockets to firebase.
-  - When posts position change it will not change in the list, yet... :)
+  - When posts change position in the list, they will automatically be updated through websockets (firebase)
 
 ### Developer
 
