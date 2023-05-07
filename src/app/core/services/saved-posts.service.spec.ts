@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SavedStoriesService } from './saved-stories.service';
+import { SavedPostsService } from './saved-posts.service';
 
-describe('SavedStoriesService', () => {
-  let service: SavedStoriesService;
+describe('SavedPostsService', () => {
+  let service: SavedPostsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SavedStoriesService);
+    service = TestBed.inject(SavedPostsService);
   });
 
   it('should be created', () => {

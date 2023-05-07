@@ -9,52 +9,53 @@
   <div class="flex-1">
     <!-- Link to external url if exists -->
     <a
-      *ngIf="story.url"
+      *ngIf="post.url"
       class="text-lg font-semibold transition-colors hover:text-orange-600 visited:text-gray-400 visited:hover:text-gray-600"
-      [href]="story.url"
+      [href]="post.url"
     >
-      {{ story.title }}
-      <span class="text-xs text-gray-400">({{ story.url | urlPreview }})</span>
+      {{ post.title }}
+      <span class="text-xs text-gray-400">({{ post.url | urlPreview }})</span>
     </a>
     <!-- Link to comments if no external url -->
     <a
-      *ngIf="!story.url"
+      *ngIf="!post.url"
       class="text-lg font-semibold transition-colors hover:text-orange-600 visited:text-gray-400 visited:hover:text-gray-600"
-      [routerLink]="['/stories', story.id]"
+      [routerLink]="['/posts', post.id]"
     >
-      {{ story.title }}
+      <span [innerHTML]="sanitizer.bypassSecurityTrustHtml(post.title)"> </span>
     </a>
     <!-- points, date and user link  -->
     <p class="text-sm text-gray-600">
-      {{ story.score }} point posted at
-      {{ story.time * 1000 | date : "medium" }} by
+      {{ post.score }} point posted at
+      {{ post.time * 1000 | date : "medium" }} by
       <a
         class="hover:underline underline-offset-2 decoration-orange-600"
-        [routerLink]="['/user', story.by]"
-        >{{ story.by }}</a
+        [routerLink]="['/user', post.by]"
+        >{{ post.by }}</a
       >
     </p>
-    <!-- comment count and link, and save/unsave story -->
-    <p class="text-sm text-gray-600">
+    <!-- comment count and link, and save/unsave post -->
+    <p class="text-sm text-gray-600" *ngIf="post.type === 'story'">
       <a
-        [routerLink]="['/stories', story.id]"
+        *ngIf="post.descendants"
+        [routerLink]="['/posts', post.id]"
         class="hover:underline underline-offset-2 decoration-orange-600"
       >
-        {{ story.descendants }} comments.
+        {{ post.descendants }} comments.
       </a>
       <span
-        *ngIf="story.saved === true"
-        (click)="this.savedStoriesService.unSaveStory(story)"
+        *ngIf="post.saved === true"
+        (click)="this.savedPostsService.unSavePost(post.id)"
         class="cursor-pointer hover:underline underline-offset-2 decoration-orange-600"
       >
-        Unsave story.
+        Unsave post.
       </span>
       <span
-        *ngIf="story.saved === false"
-        (click)="this.savedStoriesService.saveStory(story)"
+        *ngIf="post.saved === false"
+        (click)="this.savedPostsService.savePost(post.id)"
         class="cursor-pointer hover:underline underline-offset-2 decoration-orange-600"
       >
-        Save story.
+        Save post.
       </span>
     </p>
   </div>

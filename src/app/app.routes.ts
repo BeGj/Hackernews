@@ -3,13 +3,13 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'stories',
+    redirectTo: 'posts',
     pathMatch: 'full',
   },
   {
-    path: 'stories',
+    path: 'posts',
     loadChildren: () =>
-      import('./pages/stories/stories.routes').then((mod) => mod.storyRoutes),
+      import('./pages/posts/posts.routes').then((mod) => mod.postsRoutes),
   },
   {
     path: 'user/:userId',

@@ -1,0 +1,23 @@
+<!-- Page title and posts count -->
+<section class="mb-2">
+  <p class="text-xl">
+    {{ pageTitle$ | async }}
+    <span *ngIf="this.postsCount$ | async as count" class="text-gray-600"
+      >({{ count === 0 ? "loading..." : count }})</span
+    >
+  </p>
+  <p class="text-gray-700" *ngIf="(this.postsLoading$ | async) === true">
+    Loading posts...
+  </p>
+  <p class="text-gray-700" *ngIf="(this.postsContentLoading$ | async) === true">
+    Loading posts info...
+  </p>
+</section>
+
+<section class="flex flex-col space-y-2" *ngIf="this.posts$ | async as posts">
+  <app-list-view-post
+    *ngFor="let post of posts; let index = index"
+    [post]="post"
+    [index]="index + 1"
+  ></app-list-view-post>
+</section>

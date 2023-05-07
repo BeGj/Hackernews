@@ -8,6 +8,7 @@ import {
   HnPoll,
   HnPollOpt,
   HnUser,
+  HnPost,
 } from '../models/hn-items.model';
 
 @Injectable({
@@ -18,7 +19,7 @@ export class HackernewsService {
   constructor(private http: HttpClient) {}
 
   //#region Story fetchers
-  fetchTopStories(): Observable<number[]> {
+  fetchTopPosts(): Observable<number[]> {
     return this.http.get<number[]>(`${this.baseUrl}topstories.json`);
   }
 
@@ -32,6 +33,9 @@ export class HackernewsService {
   //#endregion
 
   //#region Fetch Hn Item
+  fetchPost(id: number): Observable<HnPost> {
+    return this.http.get<HnPost>(`${this.baseUrl}item/${id}.json`);
+  }
   fetchStory(id: number): Observable<HnStory> {
     return this.http.get<HnStory>(`${this.baseUrl}item/${id}.json`);
   }

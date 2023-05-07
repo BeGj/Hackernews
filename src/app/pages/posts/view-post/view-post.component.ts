@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HackernewsService } from 'src/app/core/services/hackernews.service';
-import { HnStory } from 'src/app/core/models/hn-items.model';
+import { HnPost } from 'src/app/core/models/hn-items.model';
 import {
   BehaviorSubject,
   Observable,
   ReplaySubject,
   concatMap,
   forkJoin,
+  of,
   shareReplay,
   tap,
 } from 'rxjs';
@@ -16,30 +17,36 @@ import { RouterModule } from '@angular/router';
 import { CommentComponent } from './comment/comment.component';
 
 @Component({
-  selector: 'app-view-story',
+  selector: 'app-view-post',
   standalone: true,
-  templateUrl: './view-story.component.html',
-  styleUrls: ['./view-story.component.scss'],
+  templateUrl: './view-post.component.html',
+  styleUrls: ['./view-post.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, RouterModule, CommentComponent],
 })
-export class ViewStoryComponent {
-  @Input({ required: true }) set storyId(id: number) {
-    this.storyIdChanged$.next(id);
+export class ViewPostComponent {
+  @Input({ required: true }) set postId(id: number) {
+    this.postIdChanged$.next(id);
   }
-  storyIdChanged$ = new ReplaySubject<number>();
-  story$: Observable<HnStory> = this.storyIdChanged$.pipe(
-    concatMap((id) => this.hn.fetchStory(id)),
-    tap((story) => {
-      this.title.setTitle(`Story: ${story.title}`);
+  postIdChanged$ = new ReplaySubject<number>();
+  post$: Observable<HnPost> = this.postIdChanged$.pipe(
+    concatMap((id) => this.hn.fetchPost(id)),
+    tap((post) => {
+      this.title.setTitle(`Post: ${post.title}`);
     }),
     shareReplay()
   );
   commentsLoading$ = new BehaviorSubject(false);
-  comments$ = this.story$.pipe(
-    concatMap((story) =>
-      forkJoin(story.kids.map((commentId) => this.hn.fetchComment(commentId)))
-    )
+  comments$ = this.post$.pipe(
+    concatMap((post) => {
+      if (post.kids && post.kids.length > 0) {
+        return forkJoin(
+          post.kids.map((commentId) => this.hn.fetchComment(commentId))
+        );
+      } else {
+        return of([]);
+      }
+    })
   );
 
   linkIframeVisible = new BehaviorSubject(false);

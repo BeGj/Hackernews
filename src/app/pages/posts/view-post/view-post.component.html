@@ -1,13 +1,13 @@
 <section class="">
-  <ng-container *ngIf="this.story$ | async as story">
-    <h1 class="text-lg">{{ story.title }}</h1>
+  <ng-container *ngIf="this.post$ | async as post">
+    <h1 class="text-lg">{{ post.title }}</h1>
     <p class="text-sm text-gray-600">
-      {{ story.time * 1000 | date : "medium" }} by
+      {{ post.time * 1000 | date : "medium" }} by
       <a
         class="hover:underline underline-offset-2 decoration-orange-600"
-        [routerLink]="['/user', story.by]"
+        [routerLink]="['/user', post.by]"
       >
-        {{ story.by }}</a
+        {{ post.by }}</a
       >
     </p>
     <section class="flex flex-row my-2 space-x-5">
@@ -15,20 +15,20 @@
         class="px-2 py-1 text-sm transition-colors bg-orange-600 rounded-md hover:bg-orange-700 text-orange-50"
         (click)="this.linkIframeVisible.next(!this.linkIframeVisible.value)"
       >
-        Open story with comments
+        Open post with comments
       </button>
       <a
         target="_blank"
         class="px-2 py-1 text-sm transition-colors bg-orange-600 rounded-md hover:bg-orange-700 text-orange-50"
-        [href]="story.url"
+        [href]="post.url"
       >
-        Open story in new tab
+        Open post in new tab
       </a>
     </section>
     <iframe
-      *ngIf="story.url && (linkIframeVisible | async) === true"
+      *ngIf="post.url && (linkIframeVisible | async) === true"
       class="h-[80vh] mx-auto w-[100%]"
-      [src]="sanitizer.bypassSecurityTrustResourceUrl(story.url)"
+      [src]="sanitizer.bypassSecurityTrustResourceUrl(post.url)"
       frameborder="0"
     ></iframe>
   </ng-container>
