@@ -49,7 +49,6 @@ export class HnFirebaseService {
 
     return new Observable((subscriber) => {
       onValue(listQueryRef, (snapshot) => {
-        console.log(snapshot.val());
         subscriber.next(snapshot.val());
       });
     });
