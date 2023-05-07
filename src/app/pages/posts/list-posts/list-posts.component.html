@@ -1,19 +1,24 @@
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <!-- Page title and posts count -->
 <section class="mb-2">
   <p class="text-xl">
     {{ pageTitle$ | ngrxPush }}
-    <span *ngrxLet="this.postsCount$ as count" class="text-gray-600"
-      >({{ count }})</span
+    (<span *ngrxLet="this.postsCount$ as count" class="text-gray-600">{{
+      count
+    }}</span>
+    <span class="text-gray-600" *ngIf="(this.postsLoading$ | ngrxPush) === true"
+      >Loading posts...</span
+    >)
+    <span
+      class="text-gray-600"
+      *ngIf="
+        (this.postsLoading$ | ngrxPush) === false &&
+        (this.postsContentLoading$ | ngrxPush) === true
+      "
     >
-  </p>
-  <p class="text-gray-700" *ngIf="(this.postsLoading$ | ngrxPush) === true">
-    Loading posts...
-  </p>
-  <p
-    class="text-gray-700"
-    *ngIf="(this.postsContentLoading$ | ngrxPush) === true"
-  >
-    Loading posts info...
+      Loading posts info...
+    </span>
   </p>
 </section>
 
@@ -21,6 +26,15 @@
   <app-list-view-post
     *ngFor="let post of posts; let index = index"
     [post]="post"
-    [index]="index + 1"
+    [index]="index + 1 + ((this.firstPostIndex$ | ngrxPush) ?? 0)"
   ></app-list-view-post>
+</section>
+<section
+  *ngIf="!(postsContentLoading$ | ngrxPush)"
+  class="flex flex-row justify-center h-12 my-2 text-lg transition-colors bg-gray-200 rounded-md cursor-pointer hover:text-orange-600 hover:bg-gray-300 place-items-center"
+  (click)="this.lastPostIndex$.next(this.lastPostIndex$.value + 12)"
+>
+  <div class="font-semibold transition-colors select-none">
+    Load more posts!
+  </div>
 </section>

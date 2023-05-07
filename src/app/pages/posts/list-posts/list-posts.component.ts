@@ -1,15 +1,14 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HackernewsService } from 'src/app/core/services/hackernews.service';
 import {
   BehaviorSubject,
   ReplaySubject,
   combineLatest,
-  concatMap,
   map,
   merge,
   of,
   shareReplay,
+  switchMap,
   tap,
 } from 'rxjs';
 import { RouterModule } from '@angular/router';
@@ -53,8 +52,8 @@ export class ListPostsComponent {
     shareReplay()
   );
 
-  private firstPostIndex$ = new BehaviorSubject<number | undefined>(0);
-  private lastPostIndex$ = new BehaviorSubject<number | undefined>(50);
+  protected firstPostIndex$ = new BehaviorSubject<number>(0);
+  protected lastPostIndex$ = new BehaviorSubject<number>(12);
 
   protected postsLoading$ = new BehaviorSubject(true);
   protected postsContentLoading$ = new BehaviorSubject(false);
@@ -64,22 +63,22 @@ export class ListPostsComponent {
     this.lastPostIndex$,
     this.triggerPostsLoad$,
   ]).pipe(
-    tap(() => {
+    tap((a) => {
       this.postsLoading$.next(true);
       this.postsContentLoading$.next(true);
     }),
-    concatMap(([first, last, postsPageType]) => {
+    switchMap(([first, last, postsPageType]) => {
       switch (postsPageType) {
         case 'saved-posts':
           return this.savedPostsService.getSavedPosts$(first, last);
         case 'top-posts':
-          return this.hnService.fetchTopPosts(first, last);
+          return this.firebase.fetchTopPosts(first, last);
         default:
           console.log('Error. No PostsPageType');
           return of([]);
       }
     }),
-    tap(() => {
+    tap((a) => {
       this.postsLoading$.next(false);
     }),
     shareReplay()
@@ -89,7 +88,7 @@ export class ListPostsComponent {
   protected posts$ = combineLatest([
     // on posts update
     this.postIds$.pipe(
-      concatMap((postIds) => {
+      switchMap((postIds) => {
         if (postIds.length > 0) {
           return combineLatest(
             postIds.map((id) => {
@@ -135,7 +134,6 @@ export class ListPostsComponent {
   );
 
   constructor(
-    private hnService: HackernewsService,
     protected savedPostsService: SavedPostsService,
     private firebase: HnFirebaseService
   ) {}
