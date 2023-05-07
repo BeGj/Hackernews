@@ -61,3 +61,7 @@ export interface HnUser {
   about: string;
   submitted: number[];
 }
+
+export interface HnStoryListView extends HnStory {
+  saved: boolean;
+}

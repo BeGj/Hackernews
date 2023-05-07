@@ -1,0 +1,61 @@
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<div class="flex flex-row px-2 space-x-2">
+  <div class="flex flex-row justify-center w-4 place-content-center">
+    <p class="my-auto font-mono text-xl font-bold text-gray-600" *ngIf="index">
+      {{ index }}.
+    </p>
+  </div>
+  <div class="flex-1">
+    <!-- Link to external url if exists -->
+    <a
+      *ngIf="story.url"
+      class="text-lg font-semibold transition-colors hover:text-orange-600 visited:text-gray-400 visited:hover:text-gray-600"
+      [href]="story.url"
+    >
+      {{ story.title }}
+      <span class="text-xs text-gray-400">({{ story.url | urlPreview }})</span>
+    </a>
+    <!-- Link to comments if no external url -->
+    <a
+      *ngIf="!story.url"
+      class="text-lg font-semibold transition-colors hover:text-orange-600 visited:text-gray-400 visited:hover:text-gray-600"
+      [routerLink]="['/stories', story.id]"
+    >
+      {{ story.title }}
+    </a>
+    <!-- points, date and user link  -->
+    <p class="text-sm text-gray-600">
+      {{ story.score }} point posted at
+      {{ story.time * 1000 | date : "medium" }} by
+      <a
+        class="hover:underline underline-offset-2 decoration-orange-600"
+        [routerLink]="['/user', story.by]"
+        >{{ story.by }}</a
+      >
+    </p>
+    <!-- comment count and link, and save/unsave story -->
+    <p class="text-sm text-gray-600">
+      <a
+        [routerLink]="['/stories', story.id]"
+        class="hover:underline underline-offset-2 decoration-orange-600"
+      >
+        {{ story.descendants }} comments.
+      </a>
+      <span
+        *ngIf="story.saved === true"
+        (click)="this.savedStoriesService.unSaveStory(story)"
+        class="cursor-pointer hover:underline underline-offset-2 decoration-orange-600"
+      >
+        Unsave story.
+      </span>
+      <span
+        *ngIf="story.saved === false"
+        (click)="this.savedStoriesService.saveStory(story)"
+        class="cursor-pointer hover:underline underline-offset-2 decoration-orange-600"
+      >
+        Save story.
+      </span>
+    </p>
+  </div>
+</div>

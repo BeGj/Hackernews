@@ -16,16 +16,17 @@ import {
 import { RouterModule } from '@angular/router';
 import { UrlPreviewPipe } from 'src/app/core/pipes/url-preview.pipe';
 import { SavedStoriesService } from 'src/app/core/services/saved-stories.service';
-import { HnStory } from 'src/app/core/models/hn-items.model';
+import { HnStory, HnStoryListView } from 'src/app/core/models/hn-items.model';
+import { ListViewStoryComponent } from './list-view-story/list-view-story.component';
 
 export type StoriesPageType = 'top-stories' | 'saved-stories';
 @Component({
   selector: 'app-list-stories',
   standalone: true,
-  imports: [CommonModule, RouterModule, UrlPreviewPipe],
   templateUrl: './list-stories.component.html',
   styleUrls: ['./list-stories.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule, RouterModule, UrlPreviewPipe, ListViewStoryComponent],
 })
 export class ListStoriesComponent {
   @Input() set storiesPageType(storiesPageType: StoriesPageType) {
@@ -57,7 +58,7 @@ export class ListStoriesComponent {
     concatMap((storiesPageType) => {
       switch (storiesPageType) {
         case 'saved-stories':
-          return this.savedStories.getSavedStories$();
+          return this.savedStoriesService.getSavedStories$();
         case 'top-stories':
           return this.hnService.fetchTopStories();
         default:
@@ -87,7 +88,7 @@ export class ListStoriesComponent {
       ) // to remove jobs from list
     ),
     // on saved stories update
-    this.savedStories.getSavedStories$(),
+    this.savedStoriesService.getSavedStories$(),
   ]).pipe(
     map(([stories, savedStoryIds]) => {
       return stories.map((story) => {
@@ -109,10 +110,6 @@ export class ListStoriesComponent {
 
   constructor(
     private hnService: HackernewsService,
-    protected savedStories: SavedStoriesService
+    protected savedStoriesService: SavedStoriesService
   ) {}
-}
-
-interface HnStoryListView extends HnStory {
-  saved: boolean;
 }
