@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: begj/hackernews-frontend
+    build: .
+    ports:
+      - 80:80

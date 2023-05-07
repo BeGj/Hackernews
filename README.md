@@ -9,7 +9,11 @@ Demo: <https://begj.github.io/Hackernews/>
 
 ## Development
 
-## Roadmap - draft
+### Docker deployment
+
+- `docker build .` or `docker compose up --build`
+
+### Roadmap - draft
 
 - Fix saved stories, no bug when 0 stories saved.
 - Make it usable on mobiles
@@ -17,7 +21,7 @@ Demo: <https://begj.github.io/Hackernews/>
 - Improve comment visualization
 - Improve roadmap :p
 
-## Changelog
+### Changelog
 
 [changelog.md](./changelog.md)
 

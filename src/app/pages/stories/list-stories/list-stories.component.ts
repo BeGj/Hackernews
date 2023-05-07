@@ -20,14 +20,14 @@ import { HnStory } from 'src/app/core/models/hn-items.model';
 
 export type StoriesPageType = 'top-stories' | 'saved-stories';
 @Component({
-  selector: 'app-top-stories',
+  selector: 'app-list-stories',
   standalone: true,
   imports: [CommonModule, RouterModule, UrlPreviewPipe],
-  templateUrl: './top-stories.component.html',
-  styleUrls: ['./top-stories.component.scss'],
+  templateUrl: './list-stories.component.html',
+  styleUrls: ['./list-stories.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TopStoriesComponent {
+export class ListStoriesComponent {
   @Input() set storiesPageType(storiesPageType: StoriesPageType) {
     this.triggerStoriesLoad$.next(storiesPageType);
   }

@@ -1,5 +1,28 @@
 # Changelog
 
+## 7. June 23
+
+### Contributions
+
+- Contributed to Angular router documentation
+  - How to apply preloading strategies to standalone applications
+  - <https://github.com/angular/angular/pull/50193>
+
+### DevOps
+
+- Created docker configurations (not used for github pages deployment btw)
+
+### Enhancements
+
+- Optimized application through use of Chromes Lighthouse
+- Added PreloadAll strategy, preloads all standalone components in background before visiting them.
+- Put logo in assets instead of loading from the original website
+
+### Developer
+
+- Renamed `top-stories` to `list-stories`, and moved all story components into `pages/stories`
+- Routes for story components refactored into `pages/stories/stories.routes.ts`
+
 ## 6 June 23
 
 ### Features

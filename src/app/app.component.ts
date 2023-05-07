@@ -11,6 +11,4 @@ import { HeaderComponent } from './header/header.component';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
-  title = 'angular16';
-}
+export class AppComponent {}

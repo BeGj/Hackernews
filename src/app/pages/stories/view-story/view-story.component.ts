@@ -8,7 +8,6 @@ import {
   ReplaySubject,
   concatMap,
   forkJoin,
-  map,
   shareReplay,
   tap,
 } from 'rxjs';
@@ -17,14 +16,14 @@ import { RouterModule } from '@angular/router';
 import { CommentComponent } from './comment/comment.component';
 
 @Component({
-  selector: 'app-story-view',
+  selector: 'app-view-story',
   standalone: true,
-  templateUrl: './story-view.component.html',
-  styleUrls: ['./story-view.component.scss'],
+  templateUrl: './view-story.component.html',
+  styleUrls: ['./view-story.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, RouterModule, CommentComponent],
 })
-export class StoryViewComponent {
+export class ViewStoryComponent {
   @Input({ required: true }) set storyId(id: number) {
     this.storyIdChanged$.next(id);
   }
