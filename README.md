@@ -1,5 +1,7 @@
 # Hackernews with Angular 16
 
+Demo: <https://begj.github.io/Hackernews/>
+
 ## What
 
 - A single page application for reading hackernews stories, asks and comments.
@@ -18,8 +20,6 @@
 - Reactive patterns with RxJs
 - Tailwindcss styling, no ux libraries
 - Using firebase js sdk for syncing data from the apis.(websockets underlaying)
-
-Demo: <https://begj.github.io/Hackernews/>
 
 ## Local development
 
@@ -40,14 +40,15 @@ To deploy it to github pages use
 
 - `ng deploy` or `pnpm run deploy`
 
-### Roadmap - draft
+## Roadmap - draft
 
 - [x] Save posts in your local browser/device
-- [ ] Make it usable on mobiles
+- [x] Make it usable on mobiles
+- [ ] Make it MORE usable on mobiles, with mobile first design
 - [ ] Dark/light mode
 - [ ] Improve comment visualization
 - [ ] Improve roadmap :p
 
-### Changelog
+## Changelog
 
 [changelog.md](./changelog.md)
