@@ -2,13 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import {
-  HnStory,
-  HnComment,
   HnAsk,
+  HnComment,
   HnPoll,
   HnPollOpt,
-  HnUser,
   HnPost,
+  HnStory,
+  HnUser,
 } from '../models/hn-items.model';
 
 @Injectable({

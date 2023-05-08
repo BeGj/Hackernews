@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HnPostJobWithSaved } from 'src/app/core/models/hn-items.model';
-import { UrlPreviewPipe } from '../../../../core/pipes/url-preview.pipe';
-import { RouterModule } from '@angular/router';
-import { SavedPostsService } from 'src/app/core/services/saved-posts.service';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+import { HnPostJobWithSaved } from 'src/app/core/models/hn-items.model';
+import { SavedPostsService } from 'src/app/core/services/saved-posts.service';
+import { UrlPreviewPipe } from '../../../../core/pipes/url-preview.pipe';
 
 @Component({
   selector: 'app-list-view-post',

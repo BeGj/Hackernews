@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import {
   BehaviorSubject,
   ReplaySubject,
@@ -11,11 +12,10 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { RouterModule } from '@angular/router';
-import { UrlPreviewPipe } from 'src/app/core/pipes/url-preview.pipe';
-import { SavedPostsService } from 'src/app/core/services/saved-posts.service';
 import { HnPostWithSaved } from 'src/app/core/models/hn-items.model';
+import { UrlPreviewPipe } from 'src/app/core/pipes/url-preview.pipe';
 import { HnFirebaseService } from 'src/app/core/services/hn-firebase.service';
+import { SavedPostsService } from 'src/app/core/services/saved-posts.service';
 import { ListViewPostComponent } from './list-view-post/list-view-post.component';
 
 import { LetModule, PushModule } from '@ngrx/component';

@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
+import { initializeApp } from 'firebase/app';
 import {
-  endBefore,
   getDatabase,
   limitToFirst,
   onValue,
   query,
   ref,
-  startAfter,
-  startAt,
 } from 'firebase/database';
-import { initializeApp } from 'firebase/app';
 import { Observable } from 'rxjs';
 import { HnComment, HnPost } from '../models/hn-items.model';
 @Injectable({

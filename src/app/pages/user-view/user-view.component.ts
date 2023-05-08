@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HackernewsService } from 'src/app/core/services/hackernews.service';
-import { Observable, ReplaySubject, concatMap, shareReplay, tap } from 'rxjs';
-import { HnUser } from 'src/app/core/models/hn-items.model';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { LetModule, PushModule } from '@ngrx/component';
+import { Observable, ReplaySubject, concatMap, shareReplay, tap } from 'rxjs';
+import { HnUser } from 'src/app/core/models/hn-items.model';
+import { HackernewsService } from 'src/app/core/services/hackernews.service';
 @Component({
   selector: 'app-user-view',
   standalone: true,

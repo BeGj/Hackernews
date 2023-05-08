@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { HnComment } from 'src/app/core/models/hn-items.model';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 import {
   BehaviorSubject,
   ReplaySubject,
@@ -11,6 +10,7 @@ import {
   forkJoin,
   tap,
 } from 'rxjs';
+import { HnComment } from 'src/app/core/models/hn-items.model';
 import { HackernewsService } from 'src/app/core/services/hackernews.service';
 
 import { LetModule, PushModule } from '@ngrx/component';

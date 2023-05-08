@@ -1,22 +1,24 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HackernewsService } from 'src/app/core/services/hackernews.service';
-import { HnPost } from 'src/app/core/models/hn-items.model';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { DomSanitizer, Title } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 import {
   BehaviorSubject,
   Observable,
   ReplaySubject,
+  combineLatest,
   concatMap,
-  forkJoin,
   of,
   shareReplay,
+  switchMap,
   tap,
 } from 'rxjs';
-import { DomSanitizer, Title } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
+import { HnComment, HnPost } from 'src/app/core/models/hn-items.model';
+import { HackernewsService } from 'src/app/core/services/hackernews.service';
 import { CommentComponent } from './comment/comment.component';
 
 import { LetModule, PushModule } from '@ngrx/component';
+import { HnFirebaseService } from 'src/app/core/services/hn-firebase.service';
 @Component({
   selector: 'app-view-post',
   standalone: true,
@@ -37,18 +39,18 @@ export class ViewPostComponent {
   }
   postIdChanged$ = new ReplaySubject<number>();
   post$: Observable<HnPost> = this.postIdChanged$.pipe(
-    concatMap((id) => this.hn.fetchPost(id)),
+    concatMap((id) => this.firebase.fetchPost(id)),
     tap((post) => {
       this.title.setTitle(`Post: ${post.title}`);
     }),
     shareReplay()
   );
   commentsLoading$ = new BehaviorSubject(false);
-  comments$ = this.post$.pipe(
-    concatMap((post) => {
+  comments$: Observable<HnComment[]> = this.post$.pipe(
+    switchMap((post) => {
       if (post.kids && post.kids.length > 0) {
-        return forkJoin(
-          post.kids.map((commentId) => this.hn.fetchComment(commentId))
+        return combineLatest(
+          post.kids.map((commentId) => this.firebase.fetchComment(commentId))
         );
       } else {
         return of([]);
@@ -60,6 +62,7 @@ export class ViewPostComponent {
   constructor(
     private hn: HackernewsService,
     protected sanitizer: DomSanitizer,
-    private title: Title
+    private title: Title,
+    private firebase: HnFirebaseService
   ) {}
 }
