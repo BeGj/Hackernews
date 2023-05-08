@@ -1,12 +1,17 @@
 # Changelog
 
+## 8. June 23
+
+### Enhancements
+
+- Post story view page is now fetched via firebase, and is also updated in "realtime" with websockets/firebase js sdk.
+
 ## 7. June 23
 
 ### Bugfixes
 
 - When 0 posts, will show 0 instead of hiding component
-  - Fixed by using ngrxPush pip instead of async pipe.
-
+  - Fixed by using ngrxPush pipe instead of async pipe.
 - When 0 posts, will show empty instead of loading
 
 ### Contributions
@@ -17,7 +22,7 @@
 
 ### DevOps
 
-- Created docker configurations (not used for github pages deployment btw)
+- Created docker configurations (not used for github pages deployment, only local dev at the moment)
 
 ### Enhancements
 
@@ -35,6 +40,9 @@
 
 - Renamed `top-stories` to `list-stories`, and moved all story components into `pages/stories`
 - Routes for story components refactored into `pages/stories/stories.routes.ts`
+
+- Renamed ui and component mentions of stories to posts, since it is not only stories, but also "asks"
+  - HnStory or HnAsk = HnPost
 
 ## 6 June 23
 
