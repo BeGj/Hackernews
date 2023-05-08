@@ -11,7 +11,7 @@ import {
 } from 'firebase/database';
 import { initializeApp } from 'firebase/app';
 import { Observable } from 'rxjs';
-import { HnPostJob } from '../models/hn-items.model';
+import { HnComment, HnPost } from '../models/hn-items.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -21,7 +21,16 @@ export class HnFirebaseService {
   });
   database = getDatabase(this.firebase);
 
-  fetchPost(id: number): Observable<HnPostJob> {
+  fetchPost(id: number): Observable<HnPost> {
+    const itemRef = ref(this.database, 'v0/item/' + id);
+    return new Observable((subscriber) => {
+      onValue(itemRef, (snapshot) => {
+        subscriber.next(snapshot.val());
+      });
+    });
+  }
+
+  fetchComment(id: number): Observable<HnComment> {
     const itemRef = ref(this.database, 'v0/item/' + id);
     return new Observable((subscriber) => {
       onValue(itemRef, (snapshot) => {
